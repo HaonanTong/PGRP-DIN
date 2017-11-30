@@ -1,10 +1,28 @@
-function [target] = f_main( tp_array, n_levels )
+function [target] = f_main( tp_array, n_levels, varargin )
 % Example
 % tp_array = [ 1, 2, 3, 4]
 % for each nTF activated at time point 4 as target
 % TF activated at time point 1, 2, 3, 4 as potential regulators
 
-global outputDir
+% Default Setting
+isInterp = 1;
+isInterpGen = 0;
+isTPA = 1;
+
+
+args = varargin;
+nargs = length(args);
+for i=1:2:nargs
+    switch args{i}
+        case 'isInterp', isInterp = args{i+1};
+        case 'isInterpGen', isInterpGen = args{i+1};
+        case 'isTPA', isTPA = args{i+1};
+    end
+end
+
+if isInterpGen
+    f_Interp_Gen
+end
 
 % Generate Folder
 ntp = length(tp_array);
@@ -18,43 +36,18 @@ else
 end
 
 T_array = [.25, .5, 1 , 4, 12, 24 ];
-% make dir
-outputDir = 'A_Stage';
-for i = 1 : ntp
-    outputDir = strcat(outputDir,'%d');
-    outputDir = sprintf(outputDir,tp_array(i));
-end
-mkdir(outputDir);
-
-%% Locate Files
-myDirTFs = './Data/TTFs/';
-myFilesTFs = dir(fullfile(myDirTFs,'TFs-DEGs-time-Activation*.csv'));
-
-myDirDEGs = './Data/TDEGs/';
-myFilesDEGs = dir(fullfile(myDirDEGs,'DEGs-time-Activation*.csv'));
-
-%% Interpolation
-% interpolate expression profiles into outputDir/interp folder
-for i = 1 : length(myFilesTFs)
-    f_interp(sprintf('%s%s',myDirTFs,myFilesTFs(i).name));
-end
-
-for i = 1 : length(myFilesDEGs)
-    f_interp(sprintf('%s%s',myDirDEGs,myFilesDEGs(i).name));
-end
 
 %% Discretize
-myDir_Interp = sprintf('./%s/Interp/',outputDir);
-myFiles2 = dir(fullfile(myDir_Interp,'*.csv'));
-% n_levels =10;
-
-for i = 1 : length(myFiles2)
-    csv = sprintf('%s%s',myDir_Interp,myFiles2(i).name);
-    f_discritize( csv, n_levels );
+if isInterp
+    myDscDir = 'Intrp';
+else
+    myDscDir = 'nIntrp';
 end
 
+f_discritize2(myDscDir, n_levels);
+
 %% Read Table
-myDir_Dsc = strcat(myDir_Interp,'Dscrtz/');
+myDir_Dsc = strcat(myDscDir,'/Dscrtz/');
 T_table = cell(1,6);
 TF_at = cell(1,6);
 DEGs_at = cell(1,6);
@@ -63,6 +56,11 @@ for i = 1 : 6 %TFs
     % T4 TFs-DEGs-time-Activation4-up-Interp-Dscrtz.csv
 %     Ethylene-nTFs-DEGs-time-Activation1-Interp-Dscrtz.csv
     csv = sprintf('%s%s',myDir_Dsc,sprintf('TFs-DEGs-time-Activation%d-Interp-Dscrtz.csv',i));
+    
+    if ~isInterp
+        csv = sprintf('%s%s',myDir_Dsc,sprintf('TFs-DEGs-time-Activation%d-Dscrtz.csv',i));
+    end
+    
     T_table{i} = readtable(csv,'ReadRowNames',true,'ReadVariableNames',true);
 
     TF_at{i}.tp = i; %T4
@@ -76,6 +74,11 @@ end
 for i = 1 : 6 %DEGs
     % T4 TFs-DEGs-time-Activation4-up-Interp-Dscrtz.csv
     csv = sprintf('%s%s',myDir_Dsc,sprintf('DEGs-time-Activation%d-Interp-Dscrtz.csv',i));
+    
+    if ~isInterp
+        csv = sprintf('%s%s',myDir_Dsc,sprintf('DEGs-time-Activation%d-Dscrtz.csv',i));
+    end
+    
     T_table{i} = readtable(csv,'ReadRowNames',true,'ReadVariableNames',true);
 
     DEGs_at{i}.tp = i; 
@@ -88,6 +91,12 @@ end
 
 % Derive PPaMtrx
 PoPaGList = [];
+
+if ~isTPA
+    ntp = 6;
+    pRegtp_array = 1 : 6;
+end
+
 for i = 1 : ntp
     PoPaGList = [PoPaGList; TF_at{pRegtp_array(i)}.glist];
 end

@@ -7,7 +7,8 @@ directory_Desp = 'Target_Analysis/Target_Desp/'
 directory = 'Target_Analysis/Summary/'
 
 
-List_n_levels = [2,3,5,7,10,15]
+# List_n_levels = [2,3,5,7,10,15]
+List_n_levels = [2,3,4,5]
 for n_levels in List_n_levels:
 	try:
 	    os.stat(directory+"n_levels_"+str(n_levels))
