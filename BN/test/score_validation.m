@@ -1,5 +1,8 @@
 data = [ 0 1 0 1 0 1 0 1 0 1 0 0 0 0 0 1 1 1 1 1 1 0 1 0 1 0 1 0 1 0 ; ...
          1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 ]; ...
+         
+data2 = [ 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 ; ...
+          1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 ]; ...
 %          0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]; 
 N = size(data,1);
 
@@ -12,14 +15,16 @@ ESS = 3; % Equivalent Sample Size;
 
 % BDeu Score for a specific structure;    
 % dag = [ 0 0 1 ; 0 0 1; 0 0 0]; % struture to be evaluated;
-dag = [ 0 1; 0 0];
-params = cell(1,N);
-for i=1:N
-    params{i} = {'prior_type', 'dirichlet', 'dirichlet_weight', ESS};
-end
+% dag = [ 0 1; 0 0];
+% params = cell(1,N);
+% for i=1:N
+%     params{i} = {'prior_type', 'dirichlet', 'dirichlet_weight', ESS};
+% end
 
-bayes_score = score_dags(num2cell(data), ns, {dag}, 'params', params)
+% bayes_score = score_dags(num2cell(data), ns, {dag}, 'params', params)
 bayes_score2 = f_calculateScore(data,2,ESS)
+bayes_score3 = f_calculateScore(data2,2,ESS)
+
 
 
 % Angels
