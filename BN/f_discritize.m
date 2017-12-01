@@ -13,12 +13,18 @@ var = T_table.Properties.VariableNames;
 
 [n_genes, T] = size(temp_data);
 discrete_temp_data = zeros(n_genes,T);
+csv
+% Normalize
+temp_data = f_normalize(temp_data);
 %% Discretize original expression data in n_levels levels
     
-   temp_data = log(temp_data)
-    
+   % temp_data = log(temp_data);
+   
+%   delta = -.24;
+   delta = 0;
+
    if n_levels == 2
-        m = repmat( mean(temp_data,2),1,T);
+        m = repmat( mean(temp_data,2),1,T)+delta;
         %m = repmat( median(temp_data,2),1,T);
         discrete_temp_data = temp_data >= m;
    elseif n_levels > 2 
