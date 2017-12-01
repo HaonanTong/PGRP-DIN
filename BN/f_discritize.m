@@ -14,9 +14,12 @@ var = T_table.Properties.VariableNames;
 [n_genes, T] = size(temp_data);
 discrete_temp_data = zeros(n_genes,T);
 %% Discretize original expression data in n_levels levels
-
+    
+   temp_data = log(temp_data)
+    
    if n_levels == 2
         m = repmat( mean(temp_data,2),1,T);
+        %m = repmat( median(temp_data,2),1,T);
         discrete_temp_data = temp_data >= m;
    elseif n_levels > 2 
     q = quantile(temp_data,n_levels-1,2); % quantile(X,N,dim)
@@ -36,6 +39,9 @@ discrete_temp_data = zeros(n_genes,T);
         end
     end
    end
+%     for i = 1 : n_genes
+%         discrete_temp_data = discretize(temp_data,n_levels);
+%     end
 
     T_discrete_temp_data = array2table(discrete_temp_data,'RowNames',agis,'VariableNames',var);
     [pathstr,name,ext] = fileparts(csv); 

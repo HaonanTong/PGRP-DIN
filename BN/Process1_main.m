@@ -37,7 +37,7 @@ tp_array_List = {[1,2],[1,2,3],[1,2,3,4],[1,2,3,4,5],[1,2,3,4,5,6]};
 %     end
 % end
 
-for n_levels = [2,3,4,5]%,7,10,15,20]
+for n_levels = [2,3]%[2,3,4,5]%,7,10,15,20]
     for i = 1 : length(tp_array_List)   
         tp_array = tp_array_List{i};
         ntp = length(tp_array);

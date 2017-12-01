@@ -15,6 +15,7 @@ nargs = length(args);
 for i=1:2:nargs
     switch args{i}
         case 'isInterp', isInterp = args{i+1};
+%         case 'isAverage', isAverage = args{i+1};
         case 'isInterpGen', isInterpGen = args{i+1};
         case 'isTPA', isTPA = args{i+1};
     end
@@ -38,10 +39,12 @@ end
 T_array = [.25, .5, 1 , 4, 12, 24 ];
 
 %% Discretize
-if isInterp
+if isInterp==1
     myDscDir = 'Intrp';
-else
+elseif isInterp==0
     myDscDir = 'nIntrp';
+else
+    myDscDir = 'nIntrp_Avrg';
 end
 
 f_discritize2(myDscDir, n_levels);
@@ -55,10 +58,10 @@ DEGs_at = cell(1,6);
 for i = 1 : 6 %TFs
     % T4 TFs-DEGs-time-Activation4-up-Interp-Dscrtz.csv
 %     Ethylene-nTFs-DEGs-time-Activation1-Interp-Dscrtz.csv
-    csv = sprintf('%s%s',myDir_Dsc,sprintf('TFs-DEGs-time-Activation%d-Interp-Dscrtz.csv',i));
+    csv = sprintf('%s%s',myDir_Dsc,sprintf('TFs-DEGs-time-Activation%d-Dscrtz.csv',i));
     
-    if ~isInterp
-        csv = sprintf('%s%s',myDir_Dsc,sprintf('TFs-DEGs-time-Activation%d-Dscrtz.csv',i));
+    if isInterp == 1
+       csv = sprintf('%s%s',myDir_Dsc,sprintf('TFs-DEGs-time-Activation%d-Interp-Dscrtz.csv',i));
     end
     
     T_table{i} = readtable(csv,'ReadRowNames',true,'ReadVariableNames',true);
@@ -73,10 +76,10 @@ end
 
 for i = 1 : 6 %DEGs
     % T4 TFs-DEGs-time-Activation4-up-Interp-Dscrtz.csv
-    csv = sprintf('%s%s',myDir_Dsc,sprintf('DEGs-time-Activation%d-Interp-Dscrtz.csv',i));
-    
-    if ~isInterp
-        csv = sprintf('%s%s',myDir_Dsc,sprintf('DEGs-time-Activation%d-Dscrtz.csv',i));
+    csv = sprintf('%s%s',myDir_Dsc,sprintf('DEGs-time-Activation%d-Dscrtz.csv',i));
+
+    if isInterp==1
+       csv = sprintf('%s%s',myDir_Dsc,sprintf('DEGs-time-Activation%d-Interp-Dscrtz.csv',i));
     end
     
     T_table{i} = readtable(csv,'ReadRowNames',true,'ReadVariableNames',true);

@@ -4,6 +4,13 @@ data = [ 0 1 0 1 0 1 0 1 0 1 0 0 0 0 0 1 1 1 1 1 1 0 1 0 1 0 1 0 1 0 ; ...
 data2 = [ 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 ; ...
           1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 ]; ...
 %          0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]; 
+
+data3 = [0 0 0 0 0 0 0 0 1 0 0 1 0 0 1 0 1 1 1 1 1; ...
+         1 1 1 0 0 1 0 0 1 0 1 1 1 0 1 0 0 0 0 0 0];
+     
+     data4 = [ 1 1 0 1 1 0 0;...
+               0 0 1 0 0 1 1]
+     
 N = size(data,1);
 
 % config = [0 1]';
@@ -11,7 +18,7 @@ N = size(data,1);
 
 % Hyperparameters
 ns = [2,2]; % node size for each node;
-ESS = 3; % Equivalent Sample Size;
+ESS = 1E-5; % Equivalent Sample Size;
 
 % BDeu Score for a specific structure;    
 % dag = [ 0 0 1 ; 0 0 1; 0 0 0]; % struture to be evaluated;
@@ -22,8 +29,10 @@ ESS = 3; % Equivalent Sample Size;
 % end
 
 % bayes_score = score_dags(num2cell(data), ns, {dag}, 'params', params)
-bayes_score2 = f_calculateScore(data,2,ESS)
-bayes_score3 = f_calculateScore(data2,2,ESS)
+bayes_score = f_calculateScore(data,2,ESS)
+bayes_score2 = f_calculateScore(data2,2,ESS)
+bayes_score3 = f_calculateScore(data3,2,ESS)
+bayes_score4 = f_calculateScore(data4,2,ESS)
 
 
 
