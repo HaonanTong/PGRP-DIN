@@ -44,7 +44,7 @@ for n_levels = 2%[2,3]%[2,3,4,5]%,7,10,15,20]
 
 
         % Reconstruct Network
-        trgt = f_main(tp_array, n_levels, 'isInterp',0,'isTPA',0);
+        trgt = f_main(tp_array, n_levels, 'isInterp',2,'isTPA',0);
 
         % Analyze and Record Score
         outputDir = sprintf('Target_Analysis/Target_Analysis_nlevels%d',n_levels);
